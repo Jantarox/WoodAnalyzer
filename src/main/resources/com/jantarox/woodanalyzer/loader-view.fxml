@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="700.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jantarox.woodanalyzer.view.LoaderController">
+    <children>
+      <HBox prefHeight="30.0" spacing="5.0">
+         <children>
+            <Label minHeight="-Infinity" minWidth="-Infinity" text="Image path: " HBox.hgrow="NEVER">
+               <HBox.margin>
+                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="sourceFilePathLabel" HBox.hgrow="NEVER">
+               <HBox.margin>
+                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+               </HBox.margin>
+            </Label>
+            <Pane HBox.hgrow="ALWAYS" />
+         </children>
+         <padding>
+            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+         </padding>
+      </HBox>
+      <HBox prefHeight="30.0" spacing="5.0">
+         <children>
+            <Label text="Filename:" HBox.hgrow="NEVER">
+               <HBox.margin>
+                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="filenameTextField" disable="true" prefHeight="25.0" prefWidth="191.0" />
+            <Pane HBox.hgrow="ALWAYS" />
+                <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onChooseFile" text="Choose file" HBox.hgrow="NEVER">
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                </Button>
+                <Button fx:id="okButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onOk" text="OK" HBox.hgrow="NEVER">
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                </Button>
+                <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onCancel" text="Cancel" HBox.hgrow="NEVER">
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                </Button>
+         </children>
+         <padding>
+            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+         </padding>
+      </HBox>
+    </children>
+</VBox>

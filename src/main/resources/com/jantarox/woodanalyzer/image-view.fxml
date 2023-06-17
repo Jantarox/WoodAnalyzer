@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jantarox.woodanalyzer.controls.ZoomStackPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+
+<VBox alignment="BOTTOM_LEFT" minHeight="1000.0" minWidth="1400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jantarox.woodanalyzer.view.ImageController">
+    <children>
+        <MenuBar minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="NEVER">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#openLoaderView" text="Load image..." />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#saveFile" text="Save" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#onExit" text="Exit" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Segmentation">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#openPPIChangerView" text="Change PPI..." />
+                        <MenuItem mnemonicParsing="false" onAction="#openGenerateSegmentationView" text="Generate segmentation..." />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <HBox VBox.vgrow="ALWAYS">
+            <children>
+                <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="250.0">
+                    <items>
+                        <TitledPane animated="false" collapsible="false" maxHeight="1.7976931348623157E308" text="Images">
+                            <content>
+                                <ListView fx:id="imageListView" minWidth="150.0" prefWidth="150.0" />
+                            </content>
+                        </TitledPane>
+                        <TitledPane animated="false" collapsible="false" maxHeight="1.7976931348623157E308" text="Measurements">
+                            <content>
+                        <TabPane tabMinWidth="70.0">
+                           <tabs>
+                              <Tab closable="false" text="Segments">
+                                 <content>
+                                            <ListView fx:id="measureSegmentsListView" focusTraversable="false" minWidth="150.0" prefWidth="150.0">
+                                                <opaqueInsets>
+                                                    <Insets />
+                                                </opaqueInsets>
+                                            </ListView>
+                                 </content>
+                              </Tab>
+                              <Tab closable="false" text="Areas">
+                                 <content>
+                                    <ListView fx:id="measureAreasListView" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" />
+                                 </content>
+                              </Tab>
+                           </tabs>
+                        </TabPane>
+                            </content>
+                        </TitledPane>
+                    </items>
+                </SplitPane>
+                <Separator orientation="VERTICAL" />
+                <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <HBox minHeight="150.0" prefHeight="200.0">
+                            <children>
+                                <TabPane fx:id="gesturesTabPane" focusTraversable="false" prefHeight="200.0" prefWidth="270.0" tabClosingPolicy="UNAVAILABLE" tabMinWidth="70.0" HBox.hgrow="NEVER">
+                                    <tabs>
+                                        <Tab fx:id="measureTab" closable="false" text="Measure">
+                                            <content>
+                                    <HBox spacing="5.0">
+                                       <children>
+                                          <TitledPane alignment="CENTER" animated="false" collapsible="false" prefHeight="200.0" prefWidth="75.0" text="Segments">
+                                            <content>
+                                                              <Group fx:id="measurePickerGroup">
+                                                                  <children>
+                                                                      <Rectangle fx:id="drawMeasureSelector" fill="#009dff" height="25.0" onMouseClicked="#pickDrawMeasurePen" smooth="false" stroke="BLACK" strokeType="INSIDE" width="25.0" />
+                                                                      <Rectangle fx:id="eraseMeasureSelector" fill="#1f96ff" height="25.0" layoutY="50.0" onMouseClicked="#pickEraseMeasurePen" smooth="false" stroke="BLACK" strokeType="INSIDE" width="25.0" />
+                                                                  </children>
+                                                              </Group>
+                                            </content>
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </TitledPane>
+                                          <TitledPane alignment="CENTER" collapsible="false" prefHeight="200.0" text="Areas" HBox.hgrow="ALWAYS">
+                                             <content>
+                                                <GridPane>
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <Group GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                         <children>
+                                                            <Rectangle fx:id="browseAreasSelector" fill="DODGERBLUE" height="25.0" onMouseClicked="#pickBrowseAreas" smooth="false" stroke="BLACK" strokeType="INSIDE" width="25.0" />
+                                                            <Label layoutX="30.0" layoutY="4.0" text="Browse areas" />
+                                                         </children>
+                                                      </Group>
+                                                      <Button fx:id="calculateAreasButton" mnemonicParsing="false" onAction="#openCalculateMeasurementsView" text="Calculate area statistics" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                                   </children>
+                                                </GridPane>
+                                             </content>
+                                          </TitledPane>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </HBox>
+                                            </content>
+                                        </Tab>
+                                        <Tab fx:id="drawTab" closable="false" text="Draw">
+                                            <content>
+                                    <HBox prefHeight="161.0" prefWidth="250.0" spacing="5.0">
+                                       <children>
+                                          <TitledPane alignment="CENTER" collapsible="false" prefHeight="200.0" prefWidth="75.0" text="Type">
+                                             <content>
+                                                              <Group fx:id="brushPickerGroup">
+                                                                  <children>
+                                                                      <Rectangle fx:id="growthRingBrushSelector" fill="#0096ff" height="25.0" onMouseClicked="#pickGrowthRingBrush" smooth="false" stroke="BLACK" strokeType="INSIDE" width="25.0" />
+                                                                      <Rectangle fx:id="resinDuctBrushSelector" fill="#1f96ff" height="25.0" layoutY="35.0" onMouseClicked="#pickResinDuctBrush" smooth="false" stroke="BLACK" strokeType="INSIDE" width="25.0" />
+                                                                      <Rectangle fx:id="eraserBrushSelector" fill="#1f96ff" height="25.0" layoutY="70.0" onMouseClicked="#pickEraserBrush" smooth="false" stroke="BLACK" strokeType="INSIDE" width="25.0" />
+                                                                  </children>
+                                                              </Group>
+                                             </content>
+                                          </TitledPane>
+                                          <TitledPane alignment="CENTER" collapsible="false" prefHeight="200.0" text="Brush size" HBox.hgrow="ALWAYS">
+                                             <content>
+                                                <GridPane>
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                                    <Slider fx:id="brushSizeSlider" blockIncrement="1.0" majorTickUnit="2.0" max="11.0" min="1.0" minorTickCount="1" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                         </padding>
+                                                      </Slider>
+                                                                    <TextField fx:id="brushSizeTextField" maxWidth="-Infinity" prefHeight="25.0" prefWidth="35.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                                                        <tooltip>
+                                                                            <Tooltip text="Empty Tooltip" />
+                                                                        </tooltip>
+                                                                    </TextField>
+                                                   </children>
+                                                </GridPane>
+                                             </content>
+                                          </TitledPane>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </HBox>
+                                            </content>
+                                        </Tab>
+                                    </tabs>
+                                </TabPane>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" />
+                        <TitledPane collapsible="false" prefHeight="200.0" prefWidth="200.0" text="Area statistics" HBox.hgrow="ALWAYS">
+                           <content>
+                              <GridPane hgap="5.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <TitledPane animated="false" collapsible="false" text="Total">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <Group layoutX="15.0" layoutY="15.0">
+                                                   <children>
+                                                      <Label text="Area [mm2]:" />
+                                                      <Label fx:id="totalAreaLabel" layoutX="150.0" text="-" />
+                                                   </children>
+                                                </Group>
+                                                <Group layoutX="15.0" layoutY="40.0">
+                                                   <children>
+                                                      <Label text="Resin ducts area [mm2]:" />
+                                                      <Label fx:id="totalResinDuctsAreaLabel" layoutX="150.0" text="-" />
+                                                   </children>
+                                                </Group>
+                                                <Group layoutX="15.0" layoutY="65.0">
+                                                   <children>
+                                                      <Label text="Resin ducts count [-]:" />
+                                                      <Label fx:id="totalResinDuctsCountLabel" layoutX="150.0" text="-" />
+                                                   </children>
+                                                </Group>
+                                                <Group layoutX="15.0" layoutY="90.0">
+                                                   <children>
+                                                      <Label text="Ducts area fraction [-]:" />
+                                                      <Label fx:id="totalDuctsAreaFractionLabel" layoutX="150.0" text="-" />
+                                                   </children>
+                                                </Group>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                    </TitledPane>
+                                    <TitledPane animated="false" collapsible="false" text="Selected" GridPane.columnIndex="1">
+                                       <content>
+                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <Group layoutX="15.0" layoutY="15.0">
+                                                   <children>
+                                                      <Label text="Label: " />
+                                                      <Label fx:id="currentRingLabelLabel" layoutX="150.0" text="-" />
+                                                   </children>
+                                                </Group>
+                                                <Group layoutX="15.0" layoutY="40.0">
+                                                   <children>
+                                                      <Label text="Growth ring area [mm2]:" />
+                                                      <Label fx:id="currentRingAreaLabel" layoutX="150.0" text="-" />
+                                                   </children>
+                                                </Group>
+                                                <Group layoutX="15.0" layoutY="65.0">
+                                                   <children>
+                                                      <Label text="Resin ducts area [mm2]:" />
+                                                      <Label fx:id="currentDuctsAreaLabel" layoutX="150.0" text="-" />
+                                                   </children>
+                                                </Group>
+                                                <Group layoutX="15.0" layoutY="90.0">
+                                                   <children>
+                                                      <Label text="Ducts area fraction [-]:" />
+                                                      <Label fx:id="currentDuctsAreaFractionLabel" layoutX="150.0" text="-" />
+                                                   </children>
+                                                </Group>
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </TitledPane>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </GridPane>
+                           </content>
+                        </TitledPane>
+                                <Separator orientation="VERTICAL" prefHeight="200.0" />
+                                <TitledPane animated="false" collapsible="false" prefHeight="200.0" prefWidth="120.0" text="Segmentation" HBox.hgrow="NEVER">
+                                    <content>
+                              <Group fx:id="segmentationButtonsGroup">
+                                 <children>
+                                                <Button fx:id="generateSegmentationButton" focusTraversable="false" layoutY="105.0" mnemonicParsing="false" onAction="#openGenerateSegmentationView" prefWidth="80.0" text="Generate" />
+                                                <Button fx:id="changePPIButton" focusTraversable="false" layoutY="35.0" mnemonicParsing="false" onAction="#openPPIChangerView" prefWidth="80.0" text="Change PPI" />
+                                                <Button focusTraversable="false" mnemonicParsing="false" onAction="#saveFile" prefWidth="80.0" text="Save" />
+                                 </children>
+                              </Group>
+                                    </content>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                                </TitledPane>
+                                <Separator orientation="VERTICAL" prefHeight="200.0" />
+                                <TitledPane animated="false" collapsible="false" minHeight="150.0" prefHeight="200.0" text="Image properties" HBox.hgrow="NEVER">
+                                    <content>
+                                        <AnchorPane prefHeight="200.0" prefWidth="190.0">
+                                            <children>
+                                                <Label layoutX="15.0" layoutY="15.0" text="Width [px]:">
+                                                    <padding>
+                                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                                    </padding>
+                                                </Label>
+                                                <Label layoutX="15.0" layoutY="40.0" text="Height [px]:">
+                                                    <padding>
+                                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                                    </padding>
+                                                </Label>
+                                                <Label layoutX="15.0" layoutY="65.0" text="Width [mm]:">
+                                                    <padding>
+                                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                                    </padding>
+                                                </Label>
+                                                <Label layoutX="15.0" layoutY="90.0" text="Height [mm]:">
+                                                    <padding>
+                                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                                    </padding>
+                                                </Label>
+                                                <Label layoutX="15.0" layoutY="115.0" text="PPI:">
+                                                    <padding>
+                                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                                    </padding>
+                                                    <tooltip>
+                                                        <Tooltip text="Pixels per inch" />
+                                                    </tooltip>
+                                                </Label>
+                                                <Label fx:id="widthPixelLabel" layoutX="100.0" layoutY="15.0" text="-">
+                                                    <padding>
+                                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                                    </padding>
+                                                </Label>
+                                                <Label fx:id="heightPixelLabel" layoutX="100.0" layoutY="40.0" text="-">
+                                                    <padding>
+                                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                                    </padding>
+                                                </Label>
+                                                <Label fx:id="widthRealLabel" layoutX="100.0" layoutY="65.0" text="-">
+                                                    <padding>
+                                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                                    </padding>
+                                                </Label>
+                                                <Label fx:id="heightRealLabel" layoutX="100.0" layoutY="90.0" text="-">
+                                                    <padding>
+                                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                                    </padding>
+                                                </Label>
+                                                <Label fx:id="ppiLabel" layoutX="100.0" layoutY="115.0" text="-">
+                                                    <padding>
+                                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                                    </padding>
+                                                </Label>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </TitledPane>
+                            </children>
+                            <padding>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </padding>
+                        </HBox>
+                        <Separator />
+                        <StackPane fx:id="renderStackPane" VBox.vgrow="ALWAYS">
+                            <children>
+                                <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" pannable="true" vbarPolicy="NEVER">
+                                    <content>
+                                        <ZoomStackPane fx:id="browsePane">
+                                            <children>
+                                                <ImageView fx:id="woodImageView" pickOnBounds="true" preserveRatio="true" smooth="false">
+                                                    <cursor>
+                                                        <Cursor fx:constant="DEFAULT" />
+                                                    </cursor>
+                                                    <rotationAxis>
+                                                        <Point3D z="2.0" />
+                                                    </rotationAxis>
+                                                </ImageView>
+                                            </children>
+                                        </ZoomStackPane>
+                                    </content>
+                                </ScrollPane>
+                                <Canvas fx:id="segmentationCanvas" opacity="0.5" StackPane.alignment="TOP_LEFT" />
+                            </children>
+                        </StackPane>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+        <HBox maxHeight="22.0" minHeight="22.0" prefHeight="22.0" spacing="5.0" VBox.vgrow="ALWAYS">
+            <padding>
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+            </padding>
+            <children>
+                <Label fx:id="coordinatesLabel" text="X: 0 Y: 0" HBox.hgrow="NEVER" />
+                <Pane HBox.hgrow="ALWAYS" />
+                <Label fx:id="statusLabel" text="Right status" HBox.hgrow="NEVER" />
+            </children>
+        </HBox>
+    </children>
+</VBox>
