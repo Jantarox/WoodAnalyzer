@@ -25,8 +25,8 @@ public class RunAnalyserCommandTask extends Task<Void> {
             ProcessBuilder processBuilder = new ProcessBuilder();
             String imagesPath = Paths.get(System.getProperty("user.dir"), "images").toString();
 
-//            processBuilder.command("C:\\Users\\jante\\AppData\\Local\\Programs\\ImageAnalyzer\\Python\\python.exe", "-u", "C:\\Users\\jante\\AppData\\Local\\Programs\\ImageAnalyzer\\ImageAnalyzer.launch.py", command, "-p", imagesPath, "-f", filename);
-            processBuilder.command(".\\Python\\python.exe", "-u", ".\\ImageAnalyzer.launch.py", command, "-p", imagesPath, "-f", filename);
+//            processBuilder.command("C:\\Users\\jante\\AppData\\Local\\Programs\\WoodAnalyzer\\Python\\python.exe", "-u", "C:\\Users\\jante\\AppData\\Local\\Programs\\WoodAnalyzer\\WoodAnalyzer.launch.py", command, "-p", imagesPath, "-f", filename);
+            processBuilder.command(".\\Python\\python.exe", "-u", ".\\WoodAnalyzer.launch.py", command, "-p", imagesPath, "-f", filename);
             processBuilder.directory(new File(System.getProperty("user.dir")));
             processBuilder.redirectErrorStream(true);
             process = processBuilder.start();

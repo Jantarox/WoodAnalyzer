@@ -52,7 +52,7 @@ public class ViewHandler {
             ImageController view = loader.getController();
             view.init(this, viewModelFactory.getImageViewModel());
             stage.getIcons().add(new Image(WoodAnalyzerApp.class.getResourceAsStream("icon.png")));
-            stage.setTitle("Image");
+            stage.setTitle("WoodAnalyzer");
             stage.setMaximized(true);
             stage.setMinHeight(1020);
             stage.setMinWidth(1200);
